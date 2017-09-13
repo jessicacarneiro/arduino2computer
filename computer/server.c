@@ -30,6 +30,11 @@ int main(int argc, char **argv) {
 	int sock = socket(AF_INET, SOCK_STREAM, 0);
 	if (sock == -1)
 		logexit("socket");
+
+	int enable = 1;
+	if (setsockopt(sock, SOL_SOCKET, SO_REUSEADDR, &enable, sizeof(int)) < 0)
+		logexit("setsockopt(SO_REUSEADDR) failed");
+
 	if (bind(sock, (struct sockaddr *)&srv, sizeof(srv)) < 0)
 		logexit("binding");
 
